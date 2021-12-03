@@ -3,28 +3,25 @@ Assess Trophic State Index for Use in SoCB 2020
 Curtis C. Bohlen, Casco Bay Estuary Partnership
 12/18/2020
 
-  - [Introduction](#introduction)
-  - [Load Libraries](#load-libraries)
-  - [Folder References](#folder-references)
-  - [What is the Trophic State Index?](#what-is-the-trophic-state-index)
-  - [Maine TSI Definitions](#maine-tsi-definitions)
-  - [Other Versions of TSI](#other-versions-of-tsi)
-      - [NALMS document](#nalms-document)
-      - [Reviewing the Source](#reviewing-the-source)
-      - [Carlson TSI Functions](#carlson-tsi-functions)
-  - [Taylor Pond Example](#taylor-pond-example)
-  - [Load Maine Lakes Annual TSI
+-   [Introduction](#introduction)
+-   [Load Libraries](#load-libraries)
+-   [Folder References](#folder-references)
+-   [What is the Trophic State Index?](#what-is-the-trophic-state-index)
+-   [Maine TSI Definitions](#maine-tsi-definitions)
+-   [Other Versions of TSI](#other-versions-of-tsi)
+    -   [NALMS document](#nalms-document)
+    -   [Reviewing the Source](#reviewing-the-source)
+    -   [Carlson TSI Functions](#carlson-tsi-functions)
+-   [Taylor Pond Example](#taylor-pond-example)
+-   [Load Maine Lakes Annual TSI
     Data](#load-maine-lakes-annual-tsi-data)
-  - [TSI Data Availability](#tsi-data-availability)
-  - [Correlations Among TSI Scores](#correlations-among-tsi-scores)
-  - [Preliminary Graphics](#preliminary-graphics)
-      - [TSI<sub>Secchi</sub> Graphic](#tsisecchi-graphic)
-      - [Grouped Graphic](#grouped-graphic)
-      - [Comparison of Maine and Carson TSI
+-   [TSI Data Availability](#tsi-data-availability)
+-   [Correlations Among TSI Scores](#correlations-among-tsi-scores)
+-   [Preliminary Graphics](#preliminary-graphics)
+    -   [TSI<sub>Secchi</sub> Graphic](#tsisecchi-graphic)
+    -   [Grouped Graphic](#grouped-graphic)
+    -   [Comparison of Maine and Carson TSI
         Formulae](#comparison-of-maine-and-carson-tsi-formulae)
-          - [Secchi Depth TSI](#secchi-depth-tsi)
-          - [CHl TSI](#chl-tsi)
-          - [TP TSI](#tp-tsi)
 
 <img
   src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
@@ -48,11 +45,16 @@ already considered.
 
 ``` r
 library(tidyverse)
-#> -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-#> v ggplot2 3.3.2     v purrr   0.3.4
-#> v tibble  3.0.4     v dplyr   1.0.2
-#> v tidyr   1.1.2     v stringr 1.4.0
-#> v readr   1.4.0     v forcats 0.5.0
+#> Warning: package 'tidyverse' was built under R version 4.0.5
+#> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+#> v ggplot2 3.3.5     v purrr   0.3.4
+#> v tibble  3.1.6     v dplyr   1.0.7
+#> v tidyr   1.1.4     v stringr 1.4.0
+#> v readr   2.1.0     v forcats 0.5.1
+#> Warning: package 'ggplot2' was built under R version 4.0.5
+#> Warning: package 'tidyr' was built under R version 4.0.5
+#> Warning: package 'dplyr' was built under R version 4.0.5
+#> Warning: package 'forcats' was built under R version 4.0.5
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
@@ -60,6 +62,7 @@ library(tidyverse)
 #library(readr)
 
 library(GGally)
+#> Warning: package 'GGally' was built under R version 4.0.5
 #> Registered S3 method overwritten by 'GGally':
 #>   method from   
 #>   +.gg   ggplot2
@@ -100,7 +103,7 @@ Reports.pdf](https://www.lakesofmaine.org/data/Explanation%20of%20Individual%20L
 > TSI is from 5-136 with an average of 45. EPI PHOS = Epilimnetic
 > Phosphorus samples taken to determine the TSI; C = core G = grab
 > samples taken; SEC = TSI value calculated using the mean Secchi disk
-> (water color \< 30 SPU to ensure valid TSI); CHL = TSI calculated
+> (water color &lt; 30 SPU to ensure valid TSI); CHL = TSI calculated
 > using the mean Chla.
 
 A primary purpose of the TSI concept is to allow evaluation of trophic
@@ -120,7 +123,7 @@ It is also worth noting that Maine recognizes multiple versions of the
 phosphorus TSI, depending on how samples for Total Phosphorus was
 collected. We see that here, and in Maine DEP’s Lakes data (see below)
 but neither source provides clarity on whether the same mathematical
-formulae are used to calculating the indexes or not.
+formulae are used to calculate the indexes or not.
 
 # Maine TSI Definitions
 
@@ -142,23 +145,17 @@ for TSIs. Section 6(A) includes the following information:
 > Trophic State Index (TSI) as follows:  
 > All Lakes:
 
-  - ``` 
-                      $TSI = 70 \space log (\text{mean chlorophyll a} + 0.7)$  
-    ```
-    
-    > Lakes with water color \<30 SPU:
+-                     $TSI = 70 \space log (\text{mean chlorophyll a} + 0.7)$  
 
-  - ``` 
-                    $TSI = 70 \space log (.33 \space \text{mean total phosphorus}+ 0.7)$  
-    ```
+    > Lakes with water color &lt;30 SPU:
+
+-                   $TSI = 70 \space log (.33 \space \text{mean total phosphorus}+ 0.7)$  
 
 Unfortunately, the formula for the Secchi-based TSI is so poorly typeset
 (it breaks over a page) that it can not be interpreted clearly, but it
 appears to be the following (**THIS IS INCORRECT**):
 
-  - ``` 
-               [$TSI = 70 \space log(\frac{105 +  0.7}{(\text{mean Secchi Depth})})$]
-    ```
+-              [$TSI = 70 \space log(\frac{105 +  0.7}{(\text{mean Secchi Depth})})$]
 
 The regulations are ambiguous regarding the base of the logarithms used
 to calculate these formulae. We eventually figured out that we could
@@ -172,19 +169,17 @@ A second version of the formulae, somewhat better typeset, can be found
 in Appendix C of the following source:
 
 > Welch, Barbara, Judy Potvin and Mary Ellen Dennis. 1982. The Voluntary
-> Water Quality Monitoting Program: 1982 Project Report. Maine
+> Water Quality Monitoring Program: 1982 Project Report. Maine
 > Collection. 193.
 > (<https://digitalcommons.usm.maine.edu/me_collection/193/>)
 
 It includes identical Chl and TP formulae, but offers a slightly
 different formula for the TSI based on Secchi Depth:
 
-  - ``` 
-          [$TSI = 70 \space log(\frac{105}{(\text{mean Secchi Depth})^2} + 0.7)$]
-    ```
+-         [$TSI = 70 \space log(\frac{105}{(\text{mean Secchi Depth})^2} + 0.7)$]
 
 We were able to duplicate values for published data using this formula
-(with log bse 10) , so we consider it correct.
+(with log base 10) , so we consider it correct.
 
 # Other Versions of TSI
 
@@ -199,14 +194,14 @@ Society](https://www.nalms.org/secchidipin/monitoring-methods/trophic-state-equa
 (NALMA) provides the following formula (citing Carlson 1977), which is
 typical:
 
-\[TSI(SD) = 10[6-\frac{ln(SD)}{ln(2)}]\]
+$$TSI(SD) = 10\[6-\\frac{ln(SD)}{ln(2)}\]$$
 
-The \(\frac{ln(SD)}{ln(2)}\) term equates to the log base 2 of the
-Secchi depth. This value goes up by one for each doubling of Secchi
-depth, and has value zero for SD = 1 meter (because \(log(1) = 0\)). The
-constant outside the square bracket provides scaling, and the constant
-inside the brackets, an offset defining the value of the index at SD ==
-1. TSI for an SD of 1 is 60. TSI for an SD of two is 50, and so on.
+The $\\frac{ln(SD)}{ln(2)}$ term equates to the log base 2 of the Secchi
+depth. This value goes up by one for each doubling of Secchi depth, and
+has value zero for SD = 1 meter (because *l**o**g*(1) = 0). The constant
+outside the square bracket provides scaling, and the constant inside the
+brackets, an offset defining the value of the index at SD == 1. TSI for
+an SD of 1 is 60. TSI for an SD of two is 50, and so on.
 
 ## Reviewing the Source
 
@@ -272,12 +267,13 @@ website](http://taylorpond.org/) provides the Carlson version of the
 formulae (as rewritten in log-linear form) for calculating TSI based on
 Secchi depth and Total Phosphorus.
 
-For 2020, Taylor Pond Association reports \[TP_{\text{core}} = 11.0\\
-  TP_{\text{bottom}} = 17.5 \\
-  SD = 5.35 \\
-  TSI_{\text{Secchi}} = 35.8 \\
-  TSI_{\text{Core TP}} = 38.7
-\]
+For 2020, Taylor Pond Association reports
+$$TP\_{\\text{core}} = 11.0\\\\
+  TP\_{\\text{bottom}} = 17.5 \\\\
+  SD = 5.35 \\\\
+  TSI\_{\\text{Secchi}} = 35.8 \\\\
+  TSI\_{\\text{Core TP}} = 38.7
+$$
 
 So we can confirm that they used the Carlson Formula, not the Maine
 formula:
@@ -294,17 +290,14 @@ cat(paste('Carlson:', round(tsi_sd_carlson(5.35),2)))
 ``` r
 fn <- 'Annual_Means.csv'
 annual_data <- read_csv(file.path(sibling, fn))
-#> 
+#> Rows: 1677 Columns: 29
 #> -- Column specification --------------------------------------------------------
-#> cols(
-#>   .default = col_double(),
-#>   Lake = col_character(),
-#>   Town = col_character(),
-#>   Min_Sec_Bottom = col_character(),
-#>   Mean_Sec_Bottom = col_character(),
-#>   Max_Sec_Bottom = col_character()
-#> )
-#> i Use `spec()` for the full column specifications.
+#> Delimiter: ","
+#> chr  (5): Lake, Town, Min_Sec_Bottom, Mean_Sec_Bottom, Max_Sec_Bottom
+#> dbl (24): MIDAS, Station, Year, Min_Sec, Mean_Sec, Max_Sec, Num_Months_Secch...
+#> 
+#> i Use `spec()` to retrieve the full column specification for this data.
+#> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 tsi_data <- annual_data %>%
   select(MIDAS, Lake, Town, Station, Year,
@@ -324,7 +317,6 @@ tsi_data %>%
   group_by(Lake) %>%
   summarize(across(contains('Tsi'), function(x) sum(! is.na(x)))) %>%
   arrange(Tsi_Sec)
-#> `summarise()` ungrouping output (override with `.groups` argument)
 #> # A tibble: 39 x 5
 #>    Lake              Tsi_Sec Tsi_Chl Tsi_Tpec Tsi_Tppg
 #>    <chr>               <int>   <int>    <int>    <int>
@@ -440,6 +432,19 @@ ggplot(tsi_data, aes(x=lake_ordered, y = Tsi_Chl)) +
   
   coord_flip()
 #> Warning: Removed 648 rows containing non-finite values (stat_ydensity).
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
 #> Warning: Removed 648 rows containing non-finite values (stat_summary).
 ```
 
@@ -472,6 +477,39 @@ tsi_long %>%
   
   coord_flip()
 #> Warning: Removed 1364 rows containing non-finite values (stat_ydensity).
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
+
+#> Warning: Groups with fewer than two data points have been dropped.
 #> Warning: Removed 1364 rows containing non-finite values (stat_summary).
 ```
 
@@ -483,7 +521,7 @@ Here we compare results over reasonable ranges of Secchi Depth,
 chlorophyll, and Total Phosphorus, and show that result are slightly
 different, but consistent. The Maine formulae give slightly steeper
 increases in TSI as the values of the drivers change. The two formulae
-give similar values at: \* $ SD 7$ \* $ Chl<sub>a</sub> 3.5$ \* $ TP 6$
+give similar values at: \* $ SD $ \* $ Chl<sub>a</sub> $ \* $ TP $
 
 ##### Secchi Depth TSI
 
