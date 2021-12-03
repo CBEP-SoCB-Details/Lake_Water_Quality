@@ -131,7 +131,7 @@ A second version of the formulae, somewhat better typeset, can be found in
 Appendix C of  the following source:
 
 >Welch, Barbara, Judy Potvin and Mary Ellen Dennis.  1982.  The Voluntary Water
-Quality Monitoting Program: 1982 Project Report. Maine Collection. 193. 
+Quality Monitoring Program: 1982 Project Report. Maine Collection. 193. 
 (https://digitalcommons.usm.maine.edu/me_collection/193/) 
 
 It includes identical Chl and TP formulae, but offers a slightly different 
@@ -140,7 +140,7 @@ formula for the TSI based on Secchi Depth:
 * 			[$TSI = 70 \space log(\frac{105}{(\text{mean Secchi Depth})^2} + 0.7)$]
 
 We were able to duplicate values for published data using this formula (with
-log bse 10) , so we consider it correct.
+log base 10) , so we consider it correct.
 
 # Other Versions of TSI
 Multiple references indicate Maine developed its own TSI scales, so we can not

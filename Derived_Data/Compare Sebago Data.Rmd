@@ -148,8 +148,8 @@ data may have been relabeled.  But stations 1 and 11 are not close to each
 other.  The error, if error it is, is rate.  WE have only weak evidence that we
 should remove these data, so we leave them.
 
-2.  There is evidence that field duplicate sampling practices starting in 1980s
-or so, in both data sources. That's O.K. 
+2.  There is evidence that field duplicate sampling practices starting in 
+the 1980s or so, in both data sources. That's O.K. 
 
 3. Some Secchi values are reported to three (or more) decimal places. Three
 decimal places for Secchi depth implies unlikely precision, to millimeter

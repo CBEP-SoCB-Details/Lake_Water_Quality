@@ -3,24 +3,24 @@ Compare Versions of Sebago Lake Data
 Curtis C. Bohlen, Casco Bay Estuary Partnership
 11/29/2020
 
-  - [Introduction](#introduction)
-  - [Load Libraries](#load-libraries)
-  - [Load Data](#load-data)
-  - [Read Parsed Lakes Data and limit to Sebago
+-   [Introduction](#introduction)
+-   [Load Libraries](#load-libraries)
+-   [Load Data](#load-data)
+-   [Read Parsed Lakes Data and limit to Sebago
     Lake](#read-parsed-lakes-data-and-limit-to-sebago-lake)
-      - [Folder References](#folder-references)
-  - [Read PWD Sebago Lakes Secchi Depth
+    -   [Folder References](#folder-references)
+-   [Read PWD Sebago Lakes Secchi Depth
     Data](#read-pwd-sebago-lakes-secchi-depth-data)
-  - [Review of Sebago Lake Data](#review-of-sebago-lake-data)
-      - [Sampling Stations Crosswalk](#sampling-stations-crosswalk)
-          - [Stations by Years from PWD
+-   [Review of Sebago Lake Data](#review-of-sebago-lake-data)
+    -   [Sampling Stations Crosswalk](#sampling-stations-crosswalk)
+        -   [Stations by Years from PWD
             Data](#stations-by-years-from-pwd-data)
-      - [Check for Duplicate Data](#check-for-duplicate-data)
-          - [Rough Probablities of
+    -   [Check for Duplicate Data](#check-for-duplicate-data)
+        -   [Rough Probablities of
             Duplicates](#rough-probablities-of-duplicates)
-  - [Save Sebago Secchi Data in Compatible
+-   [Save Sebago Secchi Data in Compatible
     Format](#save-sebago-secchi-data-in-compatible-format)
-      - [StationName - Station
+    -   [StationName - Station
         Correspondence](#stationname---station-correspondence)
 
 <img
@@ -59,14 +59,24 @@ library(readxl)
 library(tidyverse)
 ```
 
-    ## -- Attaching packages ----------------------------------------------------------------------------------- tidyverse 1.3.0 --
+    ## Warning: package 'tidyverse' was built under R version 4.0.5
 
-    ## v ggplot2 3.3.2     v purrr   0.3.4
-    ## v tibble  3.0.3     v dplyr   1.0.2
-    ## v tidyr   1.1.2     v stringr 1.4.0
-    ## v readr   1.3.1     v forcats 0.5.0
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 
-    ## -- Conflicts -------------------------------------------------------------------------------------- tidyverse_conflicts() --
+    ## v ggplot2 3.3.5     v purrr   0.3.4
+    ## v tibble  3.1.6     v dplyr   1.0.7
+    ## v tidyr   1.1.4     v stringr 1.4.0
+    ## v readr   2.1.0     v forcats 0.5.1
+
+    ## Warning: package 'ggplot2' was built under R version 4.0.5
+
+    ## Warning: package 'tidyr' was built under R version 4.0.5
+
+    ## Warning: package 'dplyr' was built under R version 4.0.5
+
+    ## Warning: package 'forcats' was built under R version 4.0.5
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -86,31 +96,17 @@ Secchi <- read_csv('Secchi.csv') %>%
   mutate(Year = as.numeric(format(Date, format = '%Y')))
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   MIDAS = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   Station = col_double(),
-    ##   Date = col_datetime(format = ""),
-    ##   Time = col_character(),
-    ##   Secchi_Depth = col_double(),
-    ##   Secchi_On_Bottom = col_character(),
-    ##   Scope = col_double(),
-    ##   Wind_Level = col_double(),
-    ##   Wind_Direction = col_double(),
-    ##   Cloud_Cover = col_character()
-    ## )
+    ## Rows: 18039 Columns: 12
 
-    ## Warning: 9 parsing failures.
-    ##  row   col expected actual         file
-    ## 1598 Scope a double      N 'Secchi.csv'
-    ## 1599 Scope a double      N 'Secchi.csv'
-    ## 1600 Scope a double      N 'Secchi.csv'
-    ## 1601 Scope a double      N 'Secchi.csv'
-    ## 1602 Scope a double      N 'Secchi.csv'
-    ## .... ..... ........ ...... ............
-    ## See problems(...) for more details.
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (6): Lake, Town, Time, Secchi_On_Bottom, Scope, Cloud_Cover
+    ## dbl  (5): MIDAS, Station, Secchi_Depth, Wind_Level, Wind_Direction
+    ## dttm (1): Date
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
 Temp_DO  <- read_csv('Temp_DO.csv') %>%
@@ -118,51 +114,49 @@ Temp_DO  <- read_csv('Temp_DO.csv') %>%
   mutate(Year = as.numeric(format(Date, format = '%Y')))
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   MIDAS = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   Station = col_double(),
-    ##   Date = col_datetime(format = ""),
-    ##   Depth = col_double(),
-    ##   Temperature = col_double(),
-    ##   Oxygen = col_double(),
-    ##   Oxygen_Method = col_character()
-    ## )
+    ## Rows: 102089 Columns: 9
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (3): Lake, Town, Oxygen_Method
+    ## dbl  (5): MIDAS, Station, Depth, Temperature, Oxygen
+    ## dttm (1): Date
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
 Annual_Means <- read_csv('Annual_Means.csv') %>%
   filter(MIDAS == 5786)
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   Min_Sec_Bottom = col_character(),
-    ##   Mean_Sec_Bottom = col_character(),
-    ##   Max_Sec_Bottom = col_character()
-    ## )
+    ## Rows: 1677 Columns: 29
 
-    ## See spec(...) for full column specifications.
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (5): Lake, Town, Min_Sec_Bottom, Mean_Sec_Bottom, Max_Sec_Bottom
+    ## dbl (24): MIDAS, Station, Year, Min_Sec, Mean_Sec, Max_Sec, Num_Months_Secch...
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
 Overall_Means <- read_csv('Overall_Means.csv') %>%
   filter(MIDAS == 5786)
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   Min_Sec_Bottom = col_character(),
-    ##   Mean_Sec_Bottom = col_character(),
-    ##   Max_Sec_Bottom = col_character()
-    ## )
-    ## See spec(...) for full column specifications.
+    ## Rows: 94 Columns: 28
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (5): Lake, Town, Min_Sec_Bottom, Mean_Sec_Bottom, Max_Sec_Bottom
+    ## dbl (23): MIDAS, Station, Min_Sec, Mean_Sec, Max_Sec, Num_Months_Secchi, Min...
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
 sample_data <- read_csv('Sample_Data.csv') %>%
@@ -170,21 +164,17 @@ sample_data <- read_csv('Sample_Data.csv') %>%
   mutate(Year = as.numeric(format(Date, format = '%Y')))
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   MIDAS = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   Station = col_double(),
-    ##   Date = col_datetime(format = ""),
-    ##   Depth = col_double(),
-    ##   Type = col_character(),
-    ##   Color_Method = col_character(),
-    ##   Parameter = col_character(),
-    ##   Value = col_double(),
-    ##   Method = col_character(),
-    ##   Units = col_character()
-    ## )
+    ## Rows: 19170 Columns: 12
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (7): Lake, Town, Type, Color_Method, Parameter, Method, Units
+    ## dbl  (4): MIDAS, Station, Depth, Value
+    ## dttm (1): Date
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ## Folder References
 
@@ -223,49 +213,49 @@ We check to see if DEP and PWD samples coincide by station and year.
 knitr::kable(xtabs(~ Year + Station, data = Secchi))
 ```
 
-|      |  1 | 2 | 3 | 4 | 5 |  6 |  7 | 8 | 9 | 10 | 11 | 12 | 13 | 50 |
-| :--- | -: | -: | -: | -: | -: | -: | -: | -: | -: | -: | -: | -: | -: | -: |
-| 1970 |  2 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1971 |  2 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1972 |  2 | 3 | 3 | 3 | 3 |  3 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1973 |  1 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1976 |  4 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1977 |  0 | 0 | 0 | 0 | 0 |  0 |  4 | 5 | 6 |  4 |  0 |  0 |  0 |  0 |
-| 1979 |  1 | 0 | 0 | 0 | 0 |  0 | 12 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1980 |  0 | 0 | 0 | 0 | 0 |  0 |  9 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1981 |  0 | 0 | 0 | 0 | 0 | 11 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1982 | 13 | 0 | 0 | 0 | 0 |  9 |  0 | 0 | 0 |  0 |  4 |  0 |  0 |  0 |
-| 1983 | 15 | 0 | 0 | 0 | 0 |  1 | 11 | 1 | 2 |  0 | 10 |  0 |  0 |  0 |
-| 1984 |  3 | 0 | 0 | 0 | 0 |  0 | 13 | 0 | 0 |  0 |  2 |  0 |  0 |  0 |
-| 1985 |  8 | 0 | 0 | 0 | 0 |  0 |  8 | 0 | 0 |  0 |  7 |  0 |  0 |  0 |
-| 1986 |  9 | 0 | 0 | 0 | 0 |  0 |  6 | 0 | 0 |  0 |  8 |  0 |  0 |  0 |
-| 1987 |  8 | 0 | 0 | 0 | 0 |  0 |  5 | 0 | 0 |  0 |  8 |  0 |  0 |  0 |
-| 1988 |  8 | 0 | 0 | 0 | 0 |  0 |  9 | 0 | 0 |  0 |  9 |  0 |  0 |  0 |
-| 1989 |  0 | 0 | 0 | 0 | 0 |  0 |  3 | 0 | 0 |  0 |  5 | 15 |  0 |  0 |
-| 1990 |  4 | 1 | 1 | 1 | 1 | 25 |  1 | 1 | 1 | 11 | 15 | 17 |  0 |  0 |
-| 1991 |  5 | 0 | 0 | 0 | 0 | 12 |  0 | 0 | 0 | 11 | 14 | 20 |  0 |  0 |
-| 1992 | 19 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  1 |  3 |  0 |  0 |  0 |
-| 1993 | 15 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1994 |  9 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1995 | 14 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1996 | 17 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1997 | 16 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 1998 | 20 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  1 |  0 |  0 |  0 |
-| 1999 | 18 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2000 | 22 | 0 | 0 | 0 | 0 |  8 |  0 | 0 | 0 |  8 |  9 |  0 |  0 |  0 |
-| 2001 | 16 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2002 | 20 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2003 | 15 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2004 | 20 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2005 | 24 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2006 | 16 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2007 | 18 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2008 | 18 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2009 |  9 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  5 |  0 |  0 |
-| 2010 | 11 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  0 |
-| 2013 |  0 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  1 |  0 |
-| 2017 |  0 | 0 | 0 | 0 | 0 |  1 |  0 | 0 | 0 |  1 |  1 |  0 |  0 |  1 |
-| 2018 |  0 | 0 | 0 | 0 | 0 |  0 |  0 | 0 | 0 |  0 |  0 |  0 |  0 |  1 |
+|      |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |  10 |  11 |  12 |  13 |  50 |
+|:-----|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|
+| 1970 |   2 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1971 |   2 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1972 |   2 |   3 |   3 |   3 |   3 |   3 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1973 |   1 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1976 |   4 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1977 |   0 |   0 |   0 |   0 |   0 |   0 |   4 |   5 |   6 |   4 |   0 |   0 |   0 |   0 |
+| 1979 |   1 |   0 |   0 |   0 |   0 |   0 |  12 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1980 |   0 |   0 |   0 |   0 |   0 |   0 |   9 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1981 |   0 |   0 |   0 |   0 |   0 |  11 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1982 |  13 |   0 |   0 |   0 |   0 |   9 |   0 |   0 |   0 |   0 |   4 |   0 |   0 |   0 |
+| 1983 |  15 |   0 |   0 |   0 |   0 |   1 |  11 |   1 |   2 |   0 |  10 |   0 |   0 |   0 |
+| 1984 |   3 |   0 |   0 |   0 |   0 |   0 |  13 |   0 |   0 |   0 |   2 |   0 |   0 |   0 |
+| 1985 |   8 |   0 |   0 |   0 |   0 |   0 |   8 |   0 |   0 |   0 |   7 |   0 |   0 |   0 |
+| 1986 |   9 |   0 |   0 |   0 |   0 |   0 |   6 |   0 |   0 |   0 |   8 |   0 |   0 |   0 |
+| 1987 |   8 |   0 |   0 |   0 |   0 |   0 |   5 |   0 |   0 |   0 |   8 |   0 |   0 |   0 |
+| 1988 |   8 |   0 |   0 |   0 |   0 |   0 |   9 |   0 |   0 |   0 |   9 |   0 |   0 |   0 |
+| 1989 |   0 |   0 |   0 |   0 |   0 |   0 |   3 |   0 |   0 |   0 |   5 |  15 |   0 |   0 |
+| 1990 |   4 |   1 |   1 |   1 |   1 |  25 |   1 |   1 |   1 |  11 |  15 |  17 |   0 |   0 |
+| 1991 |   5 |   0 |   0 |   0 |   0 |  12 |   0 |   0 |   0 |  11 |  14 |  20 |   0 |   0 |
+| 1992 |  19 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   1 |   3 |   0 |   0 |   0 |
+| 1993 |  15 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1994 |   9 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1995 |  14 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1996 |  17 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1997 |  16 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 1998 |  20 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   1 |   0 |   0 |   0 |
+| 1999 |  18 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2000 |  22 |   0 |   0 |   0 |   0 |   8 |   0 |   0 |   0 |   8 |   9 |   0 |   0 |   0 |
+| 2001 |  16 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2002 |  20 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2003 |  15 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2004 |  20 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2005 |  24 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2006 |  16 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2007 |  18 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2008 |  18 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2009 |   9 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   5 |   0 |   0 |
+| 2010 |  11 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |
+| 2013 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   1 |   0 |
+| 2017 |   0 |   0 |   0 |   0 |   0 |   1 |   0 |   0 |   0 |   1 |   1 |   0 |   0 |   1 |
+| 2018 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   0 |   1 |
 
 ### Stations by Years from PWD Data
 
@@ -274,7 +264,7 @@ knitr::kable(xtabs(~ Year + StationName, data = Secchi_Sebago))
 ```
 
 |      | Big Bay | Crooked-Songo | Harmons beach | Intakes | Jordan Bay | Lower Bay | Wards Cove |
-| :--- | ------: | ------------: | ------------: | ------: | ---------: | --------: | ---------: |
+|:-----|--------:|--------------:|--------------:|--------:|-----------:|----------:|-----------:|
 | 1976 |       0 |             0 |             0 |       0 |          0 |        21 |          0 |
 | 1977 |       0 |             0 |             0 |       0 |          0 |         7 |          0 |
 | 1978 |       0 |             0 |             0 |       0 |          0 |        11 |          0 |
@@ -391,7 +381,7 @@ test %>%
     remove these data, so we leave them.
 
 2.  There is evidence that field duplicate sampling practices starting
-    in 1980s or so, in both data sources. That’s O.K.
+    in the 1980s or so, in both data sources. That’s O.K.
 
 3.  Some Secchi values are reported to three (or more) decimal places.
     Three decimal places for Secchi depth implies unlikely precision, to
@@ -408,15 +398,11 @@ test %>%
     decimals is rare enough that these almost certainly represent chance
     occurrences.
 
-<!-- end list -->
+-   Stations 105 and 106 in October of 1990
+-   Stations 101 and 105 in July and October of 1994
+-   Stations 101 and 105 in July 1996 and 1998
 
-  - Stations 105 and 106 in October of 1990
-  - Stations 101 and 105 in July and October of 1994
-  - Stations 101 and 105 in July 1996 and 1998
-
-<!-- end list -->
-
-5.  More frequently, matching values are reported identical to one
+1.  More frequently, matching values are reported identical to one
     decimal place. That is expected from time to time simply due to the
     sampling process. Values should be similar, especially at nearby
     locations in the lake, and identical observations to one decimal
@@ -432,18 +418,18 @@ randomly over a two meter range, giving twenty possible observations. On
 any given date, with five observations, each equally likely, the
 probability of at least one match is:
 
-\[1 - (20/20)(19/20)(18/20)(17/20)(16/20)\]
+1 − (20/20)(19/20)(18/20)(17/20)(16/20)
 
-\[1 - ( \frac{20!}{15!} \times 20^-5) \approx 0.42% \] In reality, we
-don’t expect the observational error to be quite that large, or for the
-ranges at different Stations to exactly line up, so that probably
-overstates the probability of matches. What it shows is that we should
-expect a fair number of matches.
+$$1 - ( \\frac{20!}{15!} \\times 20^-5) \\approx 0.42% $$
+In reality, we don’t expect the observational error to be quite that
+large, or for the ranges at different Stations to exactly line up, so
+that probably overstates the probability of matches. What it shows is
+that we should expect a fair number of matches.
 
 Out of 1800 observations, (again, very roughly; since we don’t always
 have five observations on any given day) we would expect
-\(0.42 \times 1800/5 \approx 150\) matches. In fact, we got about half
-that many. Suggesting the frequency of matches we observe is well within
+0.42 × 1800/5 ≈ 150 matches. In fact, we got about half that many.
+Suggesting the frequency of matches we observe is well within
 expectations.
 
 We have some data reported as duplicated values and dates or replicates,
@@ -480,7 +466,7 @@ Secchi_Sebago %>%
 ```
 
 | StationName   | Station |
-| :------------ | ------: |
+|:--------------|--------:|
 | Big Bay       |     101 |
 | Crooked-Songo |     102 |
 | Harmons beach |     103 |
