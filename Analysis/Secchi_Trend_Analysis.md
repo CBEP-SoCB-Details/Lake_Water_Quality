@@ -48,10 +48,12 @@ library(tidyverse)
 
     ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 
-    ## v ggplot2 3.3.3     v purrr   0.3.4
-    ## v tibble  3.1.2     v dplyr   1.0.6
-    ## v tidyr   1.1.3     v stringr 1.4.0
-    ## v readr   1.4.0     v forcats 0.5.1
+    ## v ggplot2 3.3.5     v purrr   0.3.4
+    ## v tibble  3.1.6     v dplyr   1.0.7
+    ## v tidyr   1.1.4     v stringr 1.4.0
+    ## v readr   2.1.0     v forcats 0.5.1
+
+    ## Warning: package 'ggplot2' was built under R version 4.0.5
 
     ## Warning: package 'tidyr' was built under R version 4.0.5
 
@@ -96,32 +98,17 @@ fn <- 'Secchi.csv'
 secchi_data <- read_csv(file.path(sibling, fn))
 ```
 
-    ## 
-    ## -- Column specification --------------------------------------------------------
-    ## cols(
-    ##   MIDAS = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   Station = col_double(),
-    ##   Date = col_datetime(format = ""),
-    ##   Time = col_character(),
-    ##   Secchi_Depth = col_double(),
-    ##   Secchi_On_Bottom = col_character(),
-    ##   Scope = col_double(),
-    ##   Wind_Level = col_double(),
-    ##   Wind_Direction = col_double(),
-    ##   Cloud_Cover = col_character()
-    ## )
+    ## Rows: 18039 Columns: 12
 
-    ## Warning: 9 parsing failures.
-    ##  row   col expected actual                                                                                                                              file
-    ## 1598 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1599 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1600 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1601 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1602 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## .... ..... ........ ...... .................................................................................................................................
-    ## See problems(...) for more details.
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (6): Lake, Town, Time, Secchi_On_Bottom, Scope, Cloud_Cover
+    ## dbl  (5): MIDAS, Station, Secchi_Depth, Wind_Level, Wind_Direction
+    ## dttm (1): Date
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 Eight of nine parsing errors are for Scope == “N”, Songo pond, (MIDAS =
 3262), for every observation in 2011. We decided that “N” here probably
@@ -206,7 +193,7 @@ we have major gaps in the recent record. This probably reflects changes
 in how data has been reported to DEP.  
 2. The extreme low values in 2017 and 2018 correspond to the only two
 samples from a new station. Any recent trend is due to addition of this
-anomolous new source of data.
+anomalous new source of data.
 
 We correct these problems in two steps. First, we load in Portland Water
 District’s extensive Sebago Lake archive of Secchi data, then delete two
@@ -217,18 +204,17 @@ fn <- 'Secchi_Sebago.csv'
 secchi_sebago_data <- read_csv(file.path(sibling, fn))
 ```
 
-    ## 
+    ## Rows: 1002 Columns: 8
+
     ## -- Column specification --------------------------------------------------------
-    ## cols(
-    ##   MIDAS = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   StationName = col_character(),
-    ##   Date = col_datetime(format = ""),
-    ##   Year = col_double(),
-    ##   Secchi_Depth = col_double(),
-    ##   Station = col_double()
-    ## )
+    ## Delimiter: ","
+    ## chr  (3): Lake, Town, StationName
+    ## dbl  (4): MIDAS, Year, Secchi_Depth, Station
+    ## dttm (1): Date
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
 secchi_data <- secchi_data %>%
@@ -262,24 +248,16 @@ fn <- 'Lake_Morphometry_Metric.csv'
 morpho.data <- read_csv(file.path(sibling, fn))
 ```
 
-    ## 
+    ## Rows: 6044 Columns: 27
+
     ## -- Column specification --------------------------------------------------------
-    ## cols(
-    ##   .default = col_double(),
-    ##   Lake = col_character(),
-    ##   Towns = col_character(),
-    ##   Trop_Cat = col_character(),
-    ##   Dam = col_character(),
-    ##   Major_Drainage = col_character(),
-    ##   Sub_Drainage = col_character(),
-    ##   HUC10_Name = col_character(),
-    ##   USGS_Quad24 = col_character(),
-    ##   County = col_character(),
-    ##   WQ_Statement = col_character(),
-    ##   Invasives = col_character(),
-    ##   Fishery = col_character()
-    ## )
-    ## i Use `spec()` for the full column specifications.
+    ## Delimiter: ","
+    ## chr (12): Lake, Towns, Trop_Cat, Dam, Major_Drainage, Sub_Drainage, HUC10_Na...
+    ## dbl (15): MIDAS, Flushes_p_yr, HUC10_Code, UTM_X, UTM_Y, Latitude, Longitude...
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 # Lakes With Sufficient Data
 
@@ -356,7 +334,7 @@ other violations of the assumption of normality. It is thus better
 suited to this (unsupervised) application. We calculated linear model
 slopes to show that the qualitative results of my analysis are largely
 insensitive to the details of the analysis used, but we will report
-resukts of the Theil-Sen analysis.
+results of the Theil-Sen analysis.
 
 Significance of the Thiel-Sel slopes is based either on the Wilcoxon
 Test used in the default `summary.mblm()` function, or on on Kendall’s
