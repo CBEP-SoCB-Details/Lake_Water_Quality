@@ -3,21 +3,21 @@ Compare Versions of Sebago Lake Data
 Curtis C. Bohlen, Casco Bay Estuary Partnership
 11/29/2020
 
-  - [Introduction](#introduction)
-  - [Load Libraries](#load-libraries)
-  - [Load Data](#load-data)
-      - [Folder References](#folder-references)
-      - [Read Parsed Lakes Data and Limit to Sebago
+-   [Introduction](#introduction)
+-   [Load Libraries](#load-libraries)
+-   [Load Data](#load-data)
+    -   [Folder References](#folder-references)
+    -   [Read Parsed Lakes Data and Limit to Sebago
         Lake](#read-parsed-lakes-data-and-limit-to-sebago-lake)
-      - [Read PWD Sebago Lakes Secchi Depth
+    -   [Read PWD Sebago Lakes Secchi Depth
         Data](#read-pwd-sebago-lakes-secchi-depth-data)
-      - [Read Station - Region
+    -   [Read Station - Region
         Association](#read-station---region-association)
-      - [Add Regions to Data](#add-regions-to-data)
-  - [Temporal Patterns](#temporal-patterns)
-  - [Analysis Logic](#analysis-logic)
-  - [Reduced Data for Simplicity](#reduced-data-for-simplicity)
-  - [Spatial Variation?](#spatial-variation)
+    -   [Add Regions to Data](#add-regions-to-data)
+-   [Temporal Patterns](#temporal-patterns)
+-   [Analysis Logic](#analysis-logic)
+-   [Reduced Data for Simplicity](#reduced-data-for-simplicity)
+-   [Spatial Variation?](#spatial-variation)
 
 <img
   src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
@@ -27,10 +27,10 @@ Curtis C. Bohlen, Casco Bay Estuary Partnership
 
 Sebago lake is our region’s largest lake, and one of the most important.
 it is a crucial recreational resource for the region, and also provides
-high qUality drinking water for tens of thousands.
+high quality drinking water for tens of thousands.
 
-Not coincidentally, Sebago Lake also has one of the longest and riches
-records of water quality monitoting of any lake in the region.
+Not coincidentally, Sebago Lake also has one of the longest and richest
+records of water quality monitoring of any lake in the region.
 
 Here we leverage that rich data to look a bit more closely at how water
 clarity varies in space and time.
@@ -43,20 +43,32 @@ library(readxl)
 library(tidyverse)
 ```
 
-    ## -- Attaching packages ---------------------------------------------------------------------------------- tidyverse 1.3.0 --
+    ## Warning: package 'tidyverse' was built under R version 4.0.5
 
-    ## v ggplot2 3.3.2     v purrr   0.3.4
-    ## v tibble  3.0.3     v dplyr   1.0.2
-    ## v tidyr   1.1.2     v stringr 1.4.0
-    ## v readr   1.3.1     v forcats 0.5.0
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 
-    ## -- Conflicts ------------------------------------------------------------------------------------- tidyverse_conflicts() --
+    ## v ggplot2 3.3.5     v purrr   0.3.4
+    ## v tibble  3.1.6     v dplyr   1.0.7
+    ## v tidyr   1.1.4     v stringr 1.4.0
+    ## v readr   2.1.0     v forcats 0.5.1
+
+    ## Warning: package 'ggplot2' was built under R version 4.0.5
+
+    ## Warning: package 'tidyr' was built under R version 4.0.5
+
+    ## Warning: package 'dplyr' was built under R version 4.0.5
+
+    ## Warning: package 'forcats' was built under R version 4.0.5
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
 ``` r
 library(mgcv)
 ```
+
+    ## Warning: package 'mgcv' was built under R version 4.0.5
 
     ## Loading required package: nlme
 
@@ -67,7 +79,7 @@ library(mgcv)
     ## 
     ##     collapse
 
-    ## This is mgcv 1.8-33. For overview type 'help("mgcv-package")'.
+    ## This is mgcv 1.8-38. For overview type 'help("mgcv-package")'.
 
 ``` r
 library(CBEPgraphics)
@@ -94,31 +106,17 @@ Secchi <- read_csv(file.path(sister, fn)) %>%
   mutate(Year = as.numeric(format(Date, format = '%Y')))
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   MIDAS = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   Station = col_double(),
-    ##   Date = col_datetime(format = ""),
-    ##   Time = col_character(),
-    ##   Secchi_Depth = col_double(),
-    ##   Secchi_On_Bottom = col_character(),
-    ##   Scope = col_double(),
-    ##   Wind_Level = col_double(),
-    ##   Wind_Direction = col_double(),
-    ##   Cloud_Cover = col_character()
-    ## )
+    ## Rows: 18039 Columns: 12
 
-    ## Warning: 9 parsing failures.
-    ##  row   col expected actual                                                                                                                              file
-    ## 1598 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1599 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1600 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1601 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## 1602 Scope a double      N 'C:/Users/curtis.bohlen/Documents/State of the Bay 2020/Data/A5. Inland Water Quality/Lake_Water_Quality/Derived_Data/Secchi.csv'
-    ## .... ..... ........ ...... .................................................................................................................................
-    ## See problems(...) for more details.
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (6): Lake, Town, Time, Secchi_On_Bottom, Scope, Cloud_Cover
+    ## dbl  (5): MIDAS, Station, Secchi_Depth, Wind_Level, Wind_Direction
+    ## dttm (1): Date
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 We remove two values from the Sebago Lake record.
 
@@ -134,17 +132,17 @@ fn <- 'Secchi_Sebago.csv'
 Secchi_Sebago <- read_csv(file.path(sister, fn))
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   MIDAS = col_double(),
-    ##   Lake = col_character(),
-    ##   Town = col_character(),
-    ##   StationName = col_character(),
-    ##   Date = col_datetime(format = ""),
-    ##   Year = col_double(),
-    ##   Secchi_Depth = col_double(),
-    ##   Station = col_double()
-    ## )
+    ## Rows: 1002 Columns: 8
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr  (3): Lake, Town, StationName
+    ## dbl  (4): MIDAS, Year, Secchi_Depth, Station
+    ## dttm (1): Date
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
 secchi_sebago_data <- Secchi %>%
@@ -207,8 +205,8 @@ analyses.
 
 # Analysis Logic
 
-We are interested in looking at smothed temporal trends, so we are
-probably looking at using a GAM model or a GAMM model ifwe want to
+We are interested in looking at smoothed temporal trends, so we are
+probably looking at using a GAM model or a GAMM model if we want to
 explicitly model stations as random factors. hat feels unnecessary for a
 preliminary analysis.
 
@@ -309,7 +307,7 @@ better or worse water clarity, especially around 1990 to 2002 or so.
 Since 2006, clarity has gradually improved. It is actually pretty
 remarkable that results are so consistent across the lake.
 
-the GGPLOT default smoothers missom of thies detail, because they
+the GGPLOT default smoothers miss some of this detail, because they
 oversmooth.
 
 ``` r

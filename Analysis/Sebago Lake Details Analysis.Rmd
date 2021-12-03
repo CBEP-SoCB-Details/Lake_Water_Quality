@@ -16,10 +16,11 @@ output:
 
 # Introduction
 Sebago lake is our region's largest lake, and one of the most important.  it is 
-a crucial recreational resource for the region, and also provides high qUality
+a crucial recreational resource for the region, and also provides high quality
 drinking water for tens of thousands.
 
-Not coincidentally, Sebago Lake also has one of the longest and riches records of water quality monitoting of any lake in the region.
+Not coincidentally, Sebago Lake also has one of the longest and richest records
+of water quality monitoring of any lake in the region.
 
 Here we leverage that rich data to look a bit more closely at how
 water clarity varies in space and time.
@@ -152,7 +153,7 @@ or worse water clarity, especially around 1990 to 2002 or so.  Since 2006,
 clarity has gradually improved.  It is actually pretty remarkable that results
 are so consistent across the lake.
 
-the GGPLOT default smoothers missom of thies detail, because they oversmooth.
+the GGPLOT default smoothers miss some of this detail, because they oversmooth.
 ```{r}
 ggplot(reduced_data, aes(Year, Secchi_Depth)) +
   geom_point(aes(color = Region)) +
